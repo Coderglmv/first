@@ -1,0 +1,201 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Landing Page{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/body.css' %}">
+    <link rel="stylesheet" href="{% static 'css/projects.css' %}">
+
+</head>
+<body>
+
+<div class="navbar-trello">
+    <div class="nav-link d-flex">
+        <div class="dropdown d-flex">
+            <div>
+                <button class="btn dropdown-toggle text-white" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    Workspaces
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </div>
+            <div>
+                <button class="btn dropdown-toggle text-white" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    Recent
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </div>
+            <div>
+                <button class="btn dropdown-toggle text-white" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    More
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </div>
+
+
+            <div>
+                <button type="button" class="btn btn-outline-light" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                    Create Project
+                </button>
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form action="{% url 'projects:project_create' %}" method="post">
+                                {% csrf_token %}
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Project name</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    {# {{ form.name }}#}
+                                    <input type="text" class="form-control" name="project_name">
+                                    <p class="mt-2 pl-5">
+                                        <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseExample" aria-expanded="false"
+                                                aria-controls="collapseExample">
+                                            Do you want add deadline ?
+                                        </button>
+                                    </p>
+                                    <div class="collapse mt-3" id="collapseExample">
+                                        <label for="deadline">YYYY-MM-DD HH:MM:SS</label>
+                                        <input type="date" name="project_deadline" id="deadline" class="form-control"
+                                               placeholder="YYYY-MM-DD HH:MM:SS">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                                    </button>
+                                    <input type="submit" value="Create project" class="btn btn-primary">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="navbar-left">
+        <input type="text" class="input-search form-control" placeholder="Search...">
+        <p class="mb-0 ml-4"><span><img src="{% static 'images/alert-circle.svg' %}" width="20" alt=""></span></p>
+        <p class="mb-0 ml-4"><span><img src="{% static 'images/bell.svg' %}" width="20" alt=""></span></p>
+        <div class="username">
+            <a href="#" class="text-decoration-none text-white">
+                <span><strong>{{ user.first_name | slice:1 }}{{ user.last_name | slice:1 }}</strong></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+{% block content %}
+<div class="navbar-bottom">
+    <p class="btn text-white px-3 py-2 mt-2 ms-3"
+       style="background-color: rgb(255, 255, 255, 0.2);)">{{ project.name }}</p>
+    <p class="btn text-white px-3 py-2 mt-2 ms-3"
+       style="background-color: rgb(255, 255, 255, 0.2);)">{{ user.first_name }}</p>
+    <p class="btn text-white px-3 py-2 mt-2 ms-3" style="background-color: rgb(255, 255, 255, 0.2);)">Add project
+        member</p>
+</div>
+
+
+<div>
+    <div class="d-flex">
+
+        {% for x in project_column %}
+        <div class="column">
+            <p class="ms-3 mt-2 fw-bold" style="color: #444">{{ x.name }}</p>
+            <div class="project-column">
+                <button onclick=ss() id="ss" class="btn text-secondary px-3 py-2 mt-2 "
+                ><img src="{% static 'images/x.svg' %}" style="transform: rotate(45deg)" width="18" alt="">
+                    Add project column
+                </button>
+                <div style="display: none" class="mt-2" id="script{{project_column.id}}">
+                    <form method="post">
+                        {% csrf_token %}
+                        <textarea placeholder="ввести заголовок списка"></textarea>
+                        <div class="d-flex ">
+                            <button onclick=remove() class="save-input btn" type="submit">дабавить список</button>
+                            <img src="{% static 'images/x.svg' %}" class="ms-3 mt-1 "
+                                 style="cursor: pointer;" onclick=remove()
+                                 width="23" alt=""/>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+
+<!--        <div class="project-column">-->
+<!--            <button onclick=ss() id="ss" class="btn text-white px-3 py-2 mt-2 ms-3"-->
+<!--                    style="background-color: rgb(255, 255, 255, 0.2);"><img src="{% static 'images/plus (5).svg' %}"-->
+<!--                                                                            alt="">-->
+<!--                Add project column-->
+<!--            </button>-->
+<!--            <div style="display: none" class="mt-2 ms-3" id="script">-->
+<!--                <form action="{% url 'projects:project_column' project.pk %}" method="post">-->
+<!--                    {% csrf_token %}-->
+<!--                    <input type="text" name="product_column" placeholder="ввести заголовок списка">-->
+<!--                    <div class="d-flex ">-->
+<!--                        <button onclick=remove() class="save-input btn" type="submit">дабавить список</button>-->
+<!--                        <img src="{% static 'images/x.svg' %}" class="ms-3 mt-1 "-->
+<!--                             style="cursor: pointer;" onclick=remove()-->
+<!--                             width="23" alt=""/>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+</div>
+
+
+<!--<div class="column ">-->
+
+<!--</div>-->
+{% endblock %}
+
+<script>
+    var path = document.getElementById('script')
+
+    function ss() {
+        if (path.style.display == 'none') {
+            document.getElementById('script').style.display = 'block';
+            document.getElementById('ss').style.display = 'none';
+        }
+    }
+
+    function remove() {
+        if (path.style.display == 'block') {
+            document.getElementById('script').style.display = 'none';
+            document.getElementById('ss').style.display = 'block';
+        }
+    }
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Landing Page{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/body.css' %}">
+
+</head>
+<body>
+
+<div class="navbar-trello">
+    <div class="nav-link d-flex">
+        <div class="dropdown d-flex">
+            <div>
+                <button class="btn dropdown-toggle text-white" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    Workspaces
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </div>
+            <div>
+                <button class="btn dropdown-toggle text-white" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    Recent
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </div>
+            <div>
+                <button class="btn dropdown-toggle text-white" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    More
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </div>
+
+
+            <div>
+                <button type="button" class="btn btn-outline-light" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                    Create Project
+                </button>
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form action="{% url 'projects:project_create' %}" method="post">
+                                {% csrf_token %}
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Project name</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    {# {{ form.name }}#}
+                                    <input type="text" class="form-control" name="project_name">
+                                    <p class="mt-2 pl-5">
+                                        <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseExample" aria-expanded="false"
+                                                aria-controls="collapseExample">
+                                            Do you want add deadline ?
+                                        </button>
+                                    </p>
+                                    <div class="collapse mt-3" id="collapseExample">
+                                        <label for="deadline">YYYY-MM-DD HH:MM:SS</label>
+                                        <input type="date" name="project_deadline" id="deadline" class="form-control"
+                                               placeholder="YYYY-MM-DD HH:MM:SS">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                                    </button>
+                                    <input type="submit" value="Create project" class="btn btn-primary">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="navbar-left">
+        <input type="text" class="input-search form-control" placeholder="Search...">
+        <p class="mb-0 ml-4"><span><img src="{% static 'images/alert-circle.svg' %}" width="20" alt=""></span></p>
+        <p class="mb-0 ml-4"><span><img src="{% static 'images/bell.svg' %}" width="20" alt=""></span></p>
+        <div class="username">
+            <a href="#" class="text-decoration-none text-white">
+                <span><strong>{{ user.first_name | slice:1 }}{{ user.last_name | slice:1 }}</strong></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<!--<a href="{{ user.employee.image.path }}">-->
+<!--    <img src="{{ user.employee.image.path }}" alt="{{ user.employee.image.original_name }}"-->
+<!--             style="width: 50px; height: 50px; border-radius: 50%">-->
+<!--    </a>-->
+
+{% block content %}
+
+
+{% endblock %}
+
+{% if user.is_authenticated %}
+<a style="position: fixed;
+               right: 0;
+                bottom: 0" href="{% url 'auth:logout' %}" class="btn  btn-danger m-2">Log Out</a>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
