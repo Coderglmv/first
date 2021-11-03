@@ -1,7 +1,7 @@
-from django.ulrs import path
-from .views import create_task
-
-app_name = 'tasks'
-urlpatterns = [
-    path('create_task', create_task, name='create_task')
-]
+# from django.urls import path
+# from .views import task_create
+#
+#
+# urlpatterns = [
+#     path('task_create/', task_create, name='task_create')
+# ]
