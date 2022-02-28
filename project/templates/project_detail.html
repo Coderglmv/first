@@ -8,10 +8,14 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" href="{% static 'css/body.css' %}">
-    <link rel="stylesheet" href="{% static 'css/projects.css' %}">
+    <link rel="stylesheet" href="{% static 'css/project.css' %}">
 
 </head>
 <body>
+
+
+
+
 
 <div class="navbar-trello">
     <div class="nav-link d-flex">
@@ -127,52 +131,74 @@
 
         {% for x in project_column %}
         <div class="column">
-            <p class="ms-3 mt-2 fw-bold" style="color: #444">{{ x.name }}</p>
+            <div><p class="ms-3 mt-2 fw-bold" style="color: #444">{{ x.name }}</p></div>
+            <div>
+                <form action="{% url 'projects:column_delete' x.pk %}" method="post">
+                    {% csrf_token %}
+                        <button type="submit" class="border-0"><img src="{% static 'images/delete.png' %}" class="me-3" style="margin-top: 12px"
+                         width="20" alt=""></button>
+                </form>
+            </div>
             <div class="project-column">
-                <button onclick=ss() id="ss" class="btn text-secondary px-3 py-2 mt-2 "
+                <button onclick=ss('{{x.id}}')  id="ss{{x.id}}" class="btn text-secondary px-3 py-2 mt-2 "
                 ><img src="{% static 'images/x.svg' %}" style="transform: rotate(45deg)" width="18" alt="">
                     Add project column
                 </button>
-                <div style="display: none" class="mt-2" id="script{{project_column.id}}">
-                    <form method="post">
+                <div style="display: none" class="mt-2" id="script{{x.id}}">
+                    <form action="{% url 'tasks:task_create' x.id %}" method="post">
+
+
                         {% csrf_token %}
-                        <textarea placeholder="ввести заголовок списка"></textarea>
+                        <textarea placeholder="ввести заголовок списка" name="task_name"></textarea>
                         <div class="d-flex ">
                             <button onclick=remove() class="save-input btn" type="submit">дабавить список</button>
                             <img src="{% static 'images/x.svg' %}" class="ms-3 mt-1 "
                                  style="cursor: pointer;" onclick=remove()
                                  width="23" alt=""/>
                         </div>
+
+
+
                     </form>
                 </div>
+
+                {%for task in tasks%}
+                    {% if task.column_id == x.id %}
+                        <p style="color: black">{{task.name}}</p>
+                        {{task.column_id}}
+                    {% endif %}
+                {%endfor%}
 
             </div>
         </div>
         {% endfor %}
 
-<!--        <div class="project-column">-->
-<!--            <button onclick=ss() id="ss" class="btn text-white px-3 py-2 mt-2 ms-3"-->
-<!--                    style="background-color: rgb(255, 255, 255, 0.2);"><img src="{% static 'images/plus (5).svg' %}"-->
-<!--                                                                            alt="">-->
-<!--                Add project column-->
-<!--            </button>-->
-<!--            <div style="display: none" class="mt-2 ms-3" id="script">-->
-<!--                <form action="{% url 'projects:project_column' project.pk %}" method="post">-->
-<!--                    {% csrf_token %}-->
-<!--                    <input type="text" name="product_column" placeholder="ввести заголовок списка">-->
-<!--                    <div class="d-flex ">-->
-<!--                        <button onclick=remove() class="save-input btn" type="submit">дабавить список</button>-->
-<!--                        <img src="{% static 'images/x.svg' %}" class="ms-3 mt-1 "-->
-<!--                             style="cursor: pointer;" onclick=remove()-->
-<!--                             width="23" alt=""/>-->
-<!--                    </div>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
+        <div class="project-column">
+            <button onclick=ss('{{x.id}}') id="ss" class="btn text-white px-3 py-2 mt-2 ms-3"
+                    style="background-color: rgb(255, 255, 255, 0.2);"><img src="{% static 'images/plus (5).svg' %}"
+                                                                            alt="">
+                Add project column
+            </button>
+            <div style="display: none" class="mt-2 ms-3" id="script">
+                <form action="{% url 'projects:project_column' project.pk %}" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="product_column" placeholder="ввести заголовок списка">
+                    <div class="d-flex ">
+                        <button onclick=remove() class="save-input btn" type="submit">дабавить список</button>
+                        <img src="{% static 'images/x.svg' %}" class="ms-3 mt-1 "
+                             style="cursor: pointer;" onclick=remove('{{x.id}}')
+                             width="23" alt=""/>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
-
+<a style="position: fixed;
+               right: 0;
+                bottom: 0" href="{% url 'projects:project_delete' project.pk %}" class="btn  btn-danger m-2"><img
+        src="{% static 'images/delete.png' %}" width="30" alt=""></a>
 <!--<div class="column ">-->
 
 <!--</div>-->
@@ -181,10 +207,10 @@
 <script>
     var path = document.getElementById('script')
 
-    function ss() {
+    function ss(id) {
         if (path.style.display == 'none') {
-            document.getElementById('script').style.display = 'block';
-            document.getElementById('ss').style.display = 'none';
+            document.getElementById('script'+id).style.display = 'block';
+            document.getElementById('ss'+id).style.display = 'none';
         }
     }
 

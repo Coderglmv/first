@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import CASCADE
 
-from organization.models import Organization
+# from organization.models import Organization
 
 
 class Uploads(models.Model):
@@ -21,7 +21,7 @@ class Employee(models.Model):
     image = models.OneToOneField(Uploads, on_delete=CASCADE)
     phone_number = models.CharField(max_length=200)
     user = models.OneToOneField(User, on_delete=CASCADE, null=True)
-    organization = models.OneToOneField(Organization, on_delete=models.DO_NOTHING, null=True)
+    # organization = models.OneToOneField(Organization, on_delete=models.DO_NOTHING, null=True)
 
     class Meta:
         db_table = 'auth_employee'

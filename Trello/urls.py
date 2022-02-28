@@ -8,4 +8,5 @@ urlpatterns = [
     path('auth/', include("authentication.urls")),
     path('project/', include('project.urls')),
     path('landing/', include('landing.urls')),
+    path('task/', include('task.urls'))
 ]

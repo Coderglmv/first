@@ -7,7 +7,7 @@ SECRET_KEY = 'django-insecure-heij(s2v_!fousl62x7!#)l0m!_bt2cpzmieh5%ywx2zn8j(^5
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -43,6 +43,7 @@ TEMPLATES = [
             join(BASE_DIR, 'landing', 'templates'),
             join(BASE_DIR, 'authentication', 'templates'),
             join(BASE_DIR, 'project', 'templates'),
+            join(BASE_DIR, 'task', 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

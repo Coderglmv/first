@@ -21,7 +21,7 @@ def get_extension(file_name: str):
 
 
 def unique_code():
-    return "%s" % (now(), str(uuid4()).replace("-", ""))
+    return "%s" % ( str(uuid4()).replace("-", ""))
 
 
 def store_file(file):
